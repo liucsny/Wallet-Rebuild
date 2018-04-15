@@ -1,11 +1,13 @@
 <template>
-  <div class="h-100">
+  <div class="h-100 relative">
       <div class="mt4 cf">
         <small class="black-30 fw5 fl">请输入Keystore</small>
-        <small class="black-30 fw4 fr pointer link underline-hover cust-blue" @click="readLocalKeystore">从钱包文件导入</small>
+        <input type="file" class="dn" ref="pickFile" @change="onFilePicked" >
+        <small class="black-30 fw4 fr pointer link underline-hover cust-blue" @click="onPickFile">从钱包文件导入</small>
       </div>
-      <textarea class="outline-0 w-100 mb2 mt2 br2 ba b--black-10 pa2 h4" style="resize: none" v-text="keystore"></textarea>
-      <div class="w-100">
+      <small v-show="textareaError" class="textareaErrorFont absolute f7">上传的钱包文件有误，请重新上传。</small>
+      <textarea class="outline-0 w-100 mb2 mt2 br2 ba b--black-10 pa2 h4 f7 black-70 lh-title" :class="{ textareaErrorBorder:textareaError }" style="resize: none" v-text="keystore" @focus="textareaError = false"></textarea>
+      <div class="w-100 cf">
         <small class="black-30 fw5 fl dib">请输入密码</small>
       </div>
       <div class="w-100 mb4 mt2 br2 ba b--black-10 pa2 flex items-center">
@@ -22,16 +24,31 @@ export default {
     return {
       inputType: "password",
       visibility: "visibility",
+      textareaError: false,
       keystore: ""
     }
   },
   methods:{
-    readLocalKeystore(){
-      // let fr = new FileReader();
-      // fr.onload = function(){
-      //   keystore = this.result;
-      // }
-      // fr.readAsText();
+    onPickFile(){
+      this.$refs.pickFile.click()
+    },
+    onFilePicked(event){
+      const file = event.target.files[0];
+      console.log(file);
+      
+      if(file.size > 10000){
+        this.textareaError = true;
+        this.keystore = "";
+        return
+      }
+
+      const fileReader = new FileReader();
+
+      fileReader.addEventListener("load",()=>{      
+        this.keystore = fileReader.result
+      })
+      fileReader.readAsText(file);
+
     }
   }
 }
@@ -56,5 +73,14 @@ export default {
 }
 .icon-size{
     font-size: 1rem;
+}
+
+.textareaErrorFont{
+  color: #FF5B52;
+  top: 2rem;
+  left: 0.6rem;
+}
+.textareaErrorBorder{
+  border: #FF5B52 1px solid;
 }
 </style>
