@@ -1,0 +1,60 @@
+<template>
+  <div class="h-100">
+      <div class="mt4 cf">
+        <small class="black-30 fw5 fl">请输入Keystore</small>
+        <small class="black-30 fw4 fr pointer link underline-hover cust-blue" @click="readLocalKeystore">从钱包文件导入</small>
+      </div>
+      <textarea class="outline-0 w-100 mb2 mt2 br2 ba b--black-10 pa2 h4" style="resize: none" v-text="keystore"></textarea>
+      <div class="w-100">
+        <small class="black-30 fw5 fl dib">请输入密码</small>
+      </div>
+      <div class="w-100 mb4 mt2 br2 ba b--black-10 pa2 flex items-center">
+        <input class="outline-0 w-100 bn" :type="inputType">
+        <i class="material-icons black-20 pointer fr relative icon-size" @mousedown="inputType='text'; visibility='visibility_off'" @mouseup="inputType='password'; visibility='visibility'" >{{visibility}}</i>
+      </div>
+      <button class="w-100 pa3 pointer br2 outline-0 cust-bg-blue white">导入钱包</button>
+  </div>
+</template>
+
+<script>
+export default {
+  data(){
+    return {
+      inputType: "password",
+      visibility: "visibility",
+      keystore: ""
+    }
+  },
+  methods:{
+    readLocalKeystore(){
+      // let fr = new FileReader();
+      // fr.onload = function(){
+      //   keystore = this.result;
+      // }
+      // fr.readAsText();
+    }
+  }
+}
+</script>
+
+<style scoped>
+.cust-bg-blue{
+    background: #007BFF;
+    border: 1px solid #1D65B3;
+}
+
+.cust-bg-blue:hover{
+    background: rgb(25, 136, 255);
+}
+
+.cust-bg-blue:active{
+    background: rgb(8, 114, 226);
+}
+
+.cust-blue{
+  color: #007BFF;
+}
+.icon-size{
+    font-size: 1rem;
+}
+</style>
